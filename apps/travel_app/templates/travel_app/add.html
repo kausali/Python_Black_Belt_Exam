@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Create Item</title>
+</head>
+<body>
+<a href="{%url 'travel:home' %}">Home</a>
+<a href="{%url 'travel:logout' %}">Logout</a>
+<h1>Add a Trip</h1>
+<form action="/add_trip" method="POST">
+{% csrf_token %}
+<p>Destination: <input type="text" name="destination"></p>
+<p>Description: <input type="text" name="description"></p>
+<p>Travel Date From:: <input type="Date" name="travel_date_from"></p>
+<p>Travel Date To: <input type="Date" name="travel_date_to"></p>
+<p></p><input type="submit" name="add" value = "Add"></p>
+</form>
+
+{% if messages %}
+{% for message in messages %}
+  {{ message }}
+{% endfor %}
+{% endif %}
+
+
+</body>
+</html>

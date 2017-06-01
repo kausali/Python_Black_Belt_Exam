@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Destination</title>
+</head>
+<body>
+
+	<a href="{%url 'travel:home' %}">Home</a><br>
+	<a href="{%url 'travel:logout' %}">Logout</a>
+<h2>{{trip_detail.destination}}</h2>
+
+<p>Planned By:{{trip_detail.my_plan.name}}</p>
+<p>Description: {{trip_detail.description}}</p>
+<p>Travel Date from: {{trip_detail.start_date}}</p>
+<p>Travel Date To: {{trip_detail.end_date}}</p>
+
+
+
+
+
+	<p>Other Users' joining the trip:</p>
+  {% for trip in trip_detail.your_plan.all %}
+  <ul>
+  <li>{{ trip.name }}</li>
+</ul>
+  {% endfor %}
+
+</body>
+</html>

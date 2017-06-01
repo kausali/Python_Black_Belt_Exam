@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Travel</title>
+{% load staticfiles %}
+<!-- The line above tells Django to be ready to listen for static files -->
+<link rel="stylesheet" href="{% static 'travel_app/css/style.css' %}" media="screen" title="no title"  charset="utf-8">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+</head>
+<body>
+
+	<div id="container">
+	<h2>Hello, {{request.session.name}}!</h2>
+	<a href="{%url 'travel:logout' %}">Logout</a><br>
+	<h4>Your Trip Schedules</h4>
+	<ul>
+	{% if messages %}
+	{% for message in messages %}
+
+	<li>{{ message }}</li>
+	{% endfor %}
+	{% endif %}
+	</ul>
+
+<br>
+
+	<table class="table table-bordered">
+		<thead>
+			<tr>
+			<th>Destination</th>
+			<th>Travel Start Date</th>
+			<th>Travel End date</th>
+			<th>Plan</th>
+			</tr>
+		</thead>
+
+
+		<tbody>
+			{% for trip in trips %}
+			<tr>
+			<td><a href="{%url 'travel:item_detail' trip.id %}">{{ trip.destination}}</a></td>
+			<td>{{trip.start_date}}</td>
+			<td>{{trip.end_date}}</td>
+			{% if trip.my_plan.id == request.session.id %}
+			<td>{{trip.description}}</td>
+			{%else%}
+			<td>{{trip.description}}</td>
+
+
+			{% endif %}
+			{% endfor %}
+			</tr>
+		</tbody>
+	</table>
+
+	<h4>Other users plan:</h4><br>
+	<table class="table table-bordered">
+		<thead>
+			<tr>
+			<th>Name</th>
+			<th>Destination</th>
+			<th>Travel Start Date</th>
+			<th>Travel End Date</th>
+			<th> Do You Want To Join? </th>
+			</tr>
+		</thead>
+
+		<tbody>
+			{% for trip in all_trips  %}
+			{% if trip.my_plan.id != request.session.id %}
+			<tr>
+			<td>{{trip.my_plan.name}}</td>
+			<td><a href="{%url 'travel:item_detail' trip.id %}">{{trip.destination}}</a></td>
+			<td>{{trip.start_date}}</td>
+			<td>{{trip.end_date}}</td>
+			<td><a href="{%url 'travel:move_up' trip.id  %}">Join</a></td>
+			</tr>
+			{% endif %}
+			{% endfor %}
+
+		</tbody>
+	</table><br>
+
+
+
+	<a href="{%url 'travel:create' %}">Add Travel Plan</a><br><br>
+</body>
+</html>
